@@ -23,6 +23,8 @@
 
 import * as THREE from './node_modules/three/src/Three.js';
 
+console.log('THREE imported');
+
 var scene, camera, renderer;
 var geometry, material, mesh;
 
@@ -34,7 +36,7 @@ if (!window.noRun) {
 function init() {
   scene = new THREE.Scene();
 
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+  camera = new THREE.PerspectiveCamera(75, 1, 1, 10000);
   camera.position.z = 1000;
 
   geometry = new THREE.BoxGeometry(200, 200, 200);
@@ -44,7 +46,7 @@ function init() {
   scene.add(mesh);
 
   renderer = new THREE.WebGLRenderer();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(256, 256);
 
   document.body.appendChild(renderer.domElement);
 }

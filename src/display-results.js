@@ -17,18 +17,25 @@
  *
  */
 
-window.onload = function() {
+ window.onload = function() {
     let results = { onload: Math.round(performance.now()) };
     let timings = performance.getEntriesByType('resource').filter(
         rt => rt.name.indexOf('.js') >= 0);
     results.nmodule = timings.length;
     results.firstFetchStart = Math.round(Math.min.apply(null, timings.map(rt => rt.fetchStart)));
     results.lastResponseEnd = Math.round(Math.max.apply(null, timings.map(rt => rt.responseEnd)));
+    results.firstConsoleLogTime = Math.round(window.FIRST_CONSOLE_LOG_TIME);
+    results.navigationResponseStart = Math.round(performance.getEntriesByType('navigation')[0].responseStart);
+    results.navigationResponseStartToFirstConsoleLog =
+        Math.round(window.FIRST_CONSOLE_LOG_TIME - performance.getEntriesByType('navigation')[0].responseStart);
 
     const items = [['nmodule', 'Number of modules', ''],
                    ['onload', 'Time to onload', ' ms'],
                    ['firstFetchStart', "First module's fetchStart", ' ms'],
-                   ['lastResponseEnd', "Last module's responseEnd", ' ms']];
+                   ['lastResponseEnd', "Last module's responseEnd", ' ms'],
+                   ['firstConsoleLogTime', "First conosle log", ' ms'],
+                   ['navigationResponseStart', "Navigation response start", ' ms'],
+                   ['navigationResponseStartToFirstConsoleLog', "Navigation response start to First conosle log", ' ms']];
     let table = '<table>';
     for (let [name, title, unit] of items)
         table += `<tr><td>${title}:</td><td style="text-align:right">${results[name]}${unit}</td></tr>`;
